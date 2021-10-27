@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <MenuBar style="-fx-background-color: lightgrey;" VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Open Lists" />
+            <MenuItem mnemonicParsing="false" text="Download Lists" />
+          </items>
+        </Menu>
+            <Menu mnemonicParsing="false" text="Show">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="All Tasks" />
+                  <MenuItem mnemonicParsing="false" text="Uncompleted Tasks" />
+                  <MenuItem mnemonicParsing="false" text="Completed Tasks" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Edit">
+                    <content>
+                      <CheckBox text="Edit task" textFill="#131313" />
+                    </content>
+                  </CustomMenuItem>
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Delete">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete task" />
+                  <MenuItem mnemonicParsing="false" text="Clear List" />
+               </items>
+            </Menu>
+      </menus>
+    </MenuBar>
+  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="551.0" prefWidth="815.0" style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;" stylesheets="@style.css">
+         <children>
+            <TableView layoutX="108.0" layoutY="37.0" prefHeight="401.0" prefWidth="690.0" style="-fx-background-color: white; -fx-border-color: white; -fx-font-size: 20px; -fx-font-family: Corbel;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="30.0">
+              <columns>
+                <TableColumn id="tasksCol" prefWidth="568.0000228881836" text="tasks" />
+                <TableColumn id="dateCol" minWidth="0.0" prefWidth="208.0" text="due date" />
+              </columns>
+            </TableView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="812.0" layoutY="423.0" stroke="WHITE" strokeType="INSIDE" width="44.0" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="44.0" />
+         </children>
+      </AnchorPane>
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
+         <children>
+            <TextField prefHeight="37.0" prefWidth="514.0" promptText="name" style="-fx-background-color: white; -fx-border-color: silver; -fx-border-radius: 10px;">
+               <font>
+                  <Font name="Corbel" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TextField>
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="37.0" prefWidth="25.0" />
+            <DatePicker prefHeight="37.0" prefWidth="148.0" promptText="date" style="-fx-background-color: white; -fx-border-color: silver; -fx-font-size: 17px; -fx-font-family: Corbel;" />
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="37.0" prefWidth="25.0" />
+            <Pane prefHeight="37.0" prefWidth="99.0">
+               <children>
+                  <Button layoutX="2.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="93.0" style="-fx-background-color: lightgrey;" text="Save Task">
+                     <font>
+                        <Font name="Corbel" size="17.0" />
+                     </font></Button>
+                  <Button layoutX="3.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: lightgrey;" text="New Task">
+                     <font>
+                        <Font name="Corbel" size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="55.0" right="50.0" top="10.0" />
+         </padding>
+      </HBox>
+    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+      <children>
+        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Status: Saved/Delete Mode/Edit Mode" HBox.hgrow="ALWAYS">
+          <font>
+            <Font name="OCR A Extended" size="11.0" fx:id="x3" />
+          </font>
+          <textFill>
+            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+          </textFill>
+        </Label>
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+        <Label font="$x3" maxWidth="-1.0" text="List Progress" textFill="$x4" HBox.hgrow="NEVER" />
+            <ProgressBar prefHeight="16.0" prefWidth="167.0" progress="0.52">
+               <effect>
+                  <ColorAdjust brightness="0.3" contrast="0.04" hue="-0.13" saturation="-0.22" />
+               </effect>
+            </ProgressBar>
+      </children>
+      <padding>
+        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+      </padding>
+    </HBox>
+  </children>
+</VBox>

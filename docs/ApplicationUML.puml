@@ -1,0 +1,59 @@
+@startuml
+
+class Application{
+'attributes
+    - progress : double
+    - totalCompTasks : int
+    - tasks : ArrayList<Task>
+
+'methods
+    +start(Stage stage)
+    +addTask(String name, String desc, String date, boolean status)
+    +removeTask(String name)
+    +updateProgressBarAdd()
+    +updateProgressBarMinus()
+}
+
+class Task {
+'attributes
+    - name : String
+    - date : String
+    - status : boolean
+
+'methods
+    +Task(String name, String desc, String date, boolean status)
+    +setName()
+    +setDate()
+    +setStatus()
+    +getName() : String
+    +getDate() : String
+    +getStatus() : boolean
+}
+
+class ApplicationController{
+'attributes
+    -modeList : int
+    -modeTask : int
+
+'methods
+    -taskSelected(ActionEvent event)
+    -newTask(ActionEvent event)
+    -editTask(ActionEvent event)
+    -openList(ActionEvent event)
+    -downloadList(ActionEvent event)
+    -showAll(ActionEvent event)
+    -showCompleted(ActionEvent event)
+    -showUncompleted(ActionEvent event)
+    -deleteTaskMode(ActionEvent event)
+    -clearAll(ActionEvent event)
+    -editTaskMode(ActionEvent event)
+}
+
+class DeletePopUpController{
+'methods
+    -cancel(ActionEvent event)
+    -delete(ActionEvent event)
+}
+
+
+@enduml
