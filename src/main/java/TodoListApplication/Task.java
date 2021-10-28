@@ -1,39 +1,75 @@
-package TodoListApplication;/*
+package TodoListApplication;
+/*
  *  UCF COP3330 Fall 2021 Application.Application Assignment 1 Solution
  *  Copyright 2021 Breanna Marsiano
  */
 
+import javafx.beans.property.SimpleStringProperty;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Task {
-    private String name;
-    private String date;
-    private boolean status;
+    private SimpleStringProperty name;
+    private LocalDate date;
+    private boolean statBool;
+    private String status;
 
     //Constructor - Sets variables
-    Task(String name, boolean status){}
-    Task(String name, String date, boolean status){} //date must be valid
+    public Task(String name, boolean status){}
+    public Task(String name, String date, boolean status){
+        this.name = new SimpleStringProperty(name);
+        setDate(date);
+        setStatus(status);
+    }
 
     //updates name
-    void setName(){}
+    //MUST NOT BE BLANK
+    public void setName(String name){
+       // if(name.equals(""))
+           // throw Exception;
+        this.name = new SimpleStringProperty(name);
+    }
 
     //updates date, formatted as YYYY-MM-DD
     //date can be blank, but not invalid
-    void setDate(){}
+    public void setDate(String date){
+        if(!date.equals("oo")) {
+            this.date = validateDate(date);
+        }else{
+            this.date = null;
+        }
+    }
 
     //updates completed or not
-    void setStatus(){}
+    public void setStatus(boolean statBool){
+        this.statBool = statBool;
+        if(statBool) {
+            status = "O";
+        }else{
+            status = "X";
+        }
+
+    }
 
     //gets the task name
-    String getName(){
-        return "";
+    public String getName(){
+        return name.get();
     }
 
     //gets the task date, formatted as YYYY-MM-DD
-    String getDate(){
-        return "";
+    public String getDate(){
+        return date.toString();
     }
 
     //gets the task status
-    boolean getStatus(){
-        return true;
+    public boolean getStatusBool(){
+        return statBool; //✔✓☑ ✗✘ ✖
+    }
+
+    public LocalDate validateDate(String date) { //throw an error here to print message
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(date, formatter);
+
     }
 }

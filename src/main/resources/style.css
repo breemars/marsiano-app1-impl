@@ -37,15 +37,20 @@
 
 
 .table-row-cell:hover {
-    -fx-background-color: blue;
-}
-
-.table-row-cell:focused {
     -fx-background-color: cyan;
 }
 
+.table-row-cell:odd:hover {
+    -fx-background-color: cyan;
+}
+
+
 .table-row-cell:selected {
-    -fx-background-color: red;
+    -fx-background-color: blue;
+}
+
+.table-row-cell:odd:selected {
+    -fx-background-color: blue;
 }
 
  .table-row-cell{
