@@ -6,136 +6,212 @@ package TodoListApplication;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
-public class ApplicationController implements Initializable {
-    //private int modeList, modeTask; //0 = normal, 1 = edit, 2 = delete
-    //private ArrayList<Task> list;
-    private double totalCompTasks = 0.0; //keep track of progress of how many completed tasks in a list
+public class ApplicationController {
+    private final ObservableList<Task> list = FXCollections.observableArrayList(); //Holds list of user's Tasks
+    private double totalCompTasks = 0.0; //Keeps track of progress of how many completed tasks in a list
 
     // GUI Fields
-    @FXML private TextField nameField;
-    @FXML private DatePicker dateField;
-    @FXML private Button newButton;
-    @FXML private Label statusTxt;
-    @FXML private ProgressBar statBar;
-
     @FXML private TableView<Task> tableView;
     @FXML private TableColumn<Task, String> nameColumn;
     @FXML private TableColumn<Task, String> dateColumn;
-    @FXML private TableColumn<Task, String> statusCol;
+    @FXML private TableColumn<Task, String> statusColumn;
 
-    //Mark completed/uncompleted (& update progress bar)
-    //If edit mode on - populate fields with info
-    //If delete mode on - open pop up and ask for confirmation
-
-    @FXML
-    private void taskSelected(ActionEvent event) {
-
-
-    }
+    @FXML private TextField nameField;
+    @FXML private DatePicker dateField;
+    @FXML private Label statusMessageTxt;
+    @FXML private ProgressBar progressBar;
 
     //add new task with information given
     //throw error if no name given
     //throw error if date invalid
     @FXML
-    private void newTask(ActionEvent event) {
-        try {
-            Task newTask = new Task(nameField.getText(), dateField.getValue().toString(), false);
-            tableView.getItems().add(newTask);
-            updateProgressBar();
-            statusTxt.setText(":D");
-        }catch (Exception e){
-            statusTxt.setText("INVALID DATE: MUST BE M/D/YYYY");
-        }
+    private void newTask() {
 
-        //Get all the items from the table as a list, then add the new person to the list
+        try {
+            if(!nameField.getText().equals("") && !nameField.getText().equals(" ")) {
+
+                Task newTask;
+                if (dateField.getValue() == null)
+                    newTask = new Task(nameField.getText(), false);
+                else
+                    newTask = new Task(nameField.getText(), dateField.getValue().toString(), false);
+
+                list.add(newTask);
+                tableView.setItems(list);
+
+                updateProgressBar();
+                statusMessageTxt.setText(":D");
+            }else{
+                statusMessageTxt.setText("name cannot be empty :(");
+            }
+        }catch (Exception e){
+            statusMessageTxt.setText("INVALID DATE - MUST BE M/D/YYYY OR BLANK");
+        }
 
     }
 
     //opens window for finding a file and adds that list data to lists
     //updates status bar to an error message if file invalid
     @FXML
-    private void openList(ActionEvent event) {}
+    private void openList() {
+
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        try(Scanner reader = new Scanner(selectedFile)){
+            list.clear();
+            totalCompTasks = Double.parseDouble(reader.nextLine());
+
+            while (reader.hasNextLine()) {
+                String name = reader.nextLine();
+                String date = reader.nextLine();
+                String status = reader.nextLine();
+                list.add(new Task(name, date, status));
+            }
+
+            tableView.setItems(list);
+            updateProgressBar();
+            statusMessageTxt.setText("Opened " + selectedFile);
+        } catch (Exception e) {
+            statusMessageTxt.setText("INVALID FILE - Must be in proper format");
+        }
+
+
+    }
 
     //opens download pop up and then downloads file
     @FXML
-    private void downloadList(ActionEvent event) {}
+    private void downloadList() {
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        fileChooser.setInitialFileName("myList.txt");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+
+        File selectedFile = fileChooser.showSaveDialog(stage);
+
+        try (FileWriter writer = new FileWriter(selectedFile)) {
+            writer.write(totalCompTasks + "\n");
+            for (Task task : list) {
+                writer.write(task.getName() + "\n");
+                writer.write(task.getDate() + "\n");
+                writer.write(task.getStatus() + "\n");
+            }
+            statusMessageTxt.setText("Downloaded " + selectedFile);
+        }catch (IOException e){
+            statusMessageTxt.setText("INVALID FILE");
+        }
+    }
 
     //repopulates the chart with all data
     @FXML
-    private void showAll(ActionEvent event) {}
+    private void showAll() {
+        tableView.setItems(list);
+    }
 
     //repopulates the chart with completed data/tasks with status "true"
     @FXML
-    private void showCompleted(ActionEvent event) {}
+    private void showCompleted() {
+        ObservableList<Task> completed = FXCollections.observableArrayList();
+
+        for(Task task : list){
+            if(task.getStatusBool())
+                completed.add(task);
+        }
+        tableView.setItems(completed);
+
+    }
 
     //repopulates the chart with uncompleted data/tasks with status "false"
     @FXML
-    private void showUncompleted(ActionEvent event) {}
+    private void showUncompleted() {
+        ObservableList<Task> uncompleted = FXCollections.observableArrayList();
+
+        for(Task task : list){
+            if(!task.getStatusBool())
+                uncompleted.add(task);
+        }
+        tableView.setItems(uncompleted);
+    }
+
+    @FXML
+    private void deleteTask(){
+        try {
+            Task taskSelected = tableView.getSelectionModel().getSelectedItem();
+
+            if (taskSelected.getStatusBool())
+                totalCompTasks--;
+
+            list.remove(taskSelected);
+            tableView.setItems(list);
+
+            updateProgressBar();
+            statusMessageTxt.setText("B-) Deleted " + taskSelected.getName());
+        }catch (Exception e){
+            statusMessageTxt.setText("no task selected");
+        }
+
+    }
 
     //opens confirmation popup, then deletes all tasks
     @FXML
-    private void clearAll(ActionEvent event) { //:((((
-        ObservableList<Task> allTasks;
-        allTasks = tableView.getItems();
-
-        //launch confirmation popup
-
-        for(Task task: allTasks)
-            allTasks.remove(task);
-
+    private void clearAll() {
+        ObservableList<Task> allTasks = tableView.getItems();
+        allTasks.clear();
+        list.clear();
         totalCompTasks = 0;
         updateProgressBar();
-
+        statusMessageTxt.setText("all tasks deleted");
     }
 
-
-    public void changeName(TableColumn.CellEditEvent cell)
-    {
-        Task personSelected =  tableView.getSelectionModel().getSelectedItem();
-        personSelected.setName(cell.getNewValue().toString());
+    @FXML
+    private void changeName(CellEditEvent<Task, String> cell) {
+        Task taskSelected =  tableView.getSelectionModel().getSelectedItem();
+        if(!cell.getNewValue().equals("") && !cell.getNewValue().equals(" ")) {
+            taskSelected.setName(cell.getNewValue());
+            statusMessageTxt.setText(":D");
+        }else{
+            list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
+            list.remove(taskSelected);
+            tableView.setItems(list);
+            statusMessageTxt.setText("name cannot be empty :(");
+        }
     }
 
-    public void changeDate(TableColumn.CellEditEvent cell)
-    {
-       // ObservableList<Task> selectedRows, allTasks;
-        //allTasks = tableView.getItems();
-
-        Task taskSelected = tableView.getSelectionModel().getSelectedItem();
+    @FXML
+    private void changeDate(CellEditEvent<Task, String> cell) {
+       Task taskSelected = tableView.getSelectionModel().getSelectedItem();
 
         try {
-            taskSelected.setDate(cell.getNewValue().toString());
-          statusTxt.setText(":D");
-        }catch(Exception e){
-            tableView.getItems().add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
-            tableView.getItems().remove(taskSelected);
-          //  allTasks.remove(taskSelected);
+            taskSelected.setDate(cell.getNewValue());
+            statusMessageTxt.setText(":D");
 
-            statusTxt.setText("INVALID DATE: MUST BE YYYY-MM-DD or M/D/YYYY");
+        }catch(Exception e){
+            list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
+            list.remove(taskSelected);
+            tableView.setItems(list);
+            statusMessageTxt.setText("INVALID DATE - MUST BE YYYY-MM-DD or BLANK");
         }
     }
 
 
-
-    public void changeStatus()
-    {
-        // ObservableList<Task> selectedRows, allTasks;
-        //allTasks = tableView.getItems();
-
+    @FXML
+    private void changeStatus(){
         try {
             Task taskSelected = tableView.getSelectionModel().getSelectedItem();
 
@@ -146,56 +222,35 @@ public class ApplicationController implements Initializable {
                 taskSelected.setStatus(true);
                 totalCompTasks++;
             }
-
             updateProgressBar();
 
-            tableView.getItems().add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
-            tableView.getItems().remove(taskSelected);
-          //    allTasks.remove(taskSelected);
-            statusTxt.setText("woo");
+            list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
+            list.remove(taskSelected);
+            tableView.setItems(list);
+
+            statusMessageTxt.setText("woo");
+
+            if(totalCompTasks == list.size())
+                statusMessageTxt.setText("ALL TASKS COMPLETE - CONGRATS KING B-)");
+
         }catch (Exception e){
-            statusTxt.setText("no task selected");
+            statusMessageTxt.setText("no task selected");
         }
-
-
-
     }
 
-    public void updateProgressBar(){
-        statBar.setProgress(totalCompTasks/tableView.getItems().size());
+    private void updateProgressBar(){
+        progressBar.setProgress(totalCompTasks/tableView.getItems().size());
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize() {
         //set up the columns in the table
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         //Name and date fields editable
         tableView.setEditable(true);
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         dateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
     }
-
-    public void deleteTask()
-    {
-
-        ObservableList<Task> allTasks;
-        allTasks = tableView.getItems();
-
-        //launch confirmation popup
-
-        Task taskSelected = tableView.getSelectionModel().getSelectedItem();
-
-        if (taskSelected.getStatusBool())
-            totalCompTasks--;
-
-        allTasks.remove(taskSelected);
-
-        updateProgressBar();
-
-    }
-
 }

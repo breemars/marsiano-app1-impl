@@ -1,59 +1,64 @@
 @startuml
 
-class Application{
-'attributes
-    - progress : double
-    - totalCompTasks : int
-    - tasks : ArrayList<Task>
-
-'methods
-    +start(Stage stage)
-    +addTask(String name, String desc, String date, boolean status)
-    +removeTask(String name)
-    +updateProgressBarAdd()
-    +updateProgressBarMinus()
-}
-
 class Task {
 'attributes
-    - name : String
+    - name : SimpleStringProperty
     - date : String
-    - status : boolean
+    - status : String
+    - statBool : boolean
 
 'methods
-    +Task(String name, String desc, String date, boolean status)
-    +setName()
-    +setDate()
-    +setStatus()
+    +Task(String name, boolean statBool)
+    +Task(String name, String date, boolean statBool)
+    +Task(String name, String date, String status)
+
+    +setName(String name)
+    +setDate(String date)
+    +setStatus(boolean statBool)
+
     +getName() : String
     +getDate() : String
-    +getStatus() : boolean
+    +getStatus() : String
+    +getStatusBool() : boolean
 }
 
 class ApplicationController{
 'attributes
-    -modeList : int
-    -modeTask : int
+    - tableView : TableView<Task>
+    - nameColumn : TableColumn<Task, String>
+    - dateColumn : TableColumn<Task, String>
+    - statusCol : TableColumn<Task, String>
+
+    - private TextField nameField;
+    - dateField : DatePicker
+    - statusMessageTxt : Label
+    - progressBar : ProgressBar
 
 'methods
-    -taskSelected(ActionEvent event)
-    -newTask(ActionEvent event)
-    -editTask(ActionEvent event)
-    -openList(ActionEvent event)
-    -downloadList(ActionEvent event)
-    -showAll(ActionEvent event)
-    -showCompleted(ActionEvent event)
-    -showUncompleted(ActionEvent event)
-    -deleteTaskMode(ActionEvent event)
-    -clearAll(ActionEvent event)
-    -editTaskMode(ActionEvent event)
+    -newTask()
+
+    -openList()
+    -downloadList()
+
+    -showAll()
+    -showCompleted()
+    -showUncompleted()
+
+    -deleteTask()
+    -clearAll()
+
+    -changeName()
+    -changeDate()
+    -changeStatus()
+
+    -updateProgressBar()
+    +initialize(URL url, ResourceBundle rb)
 }
 
-class DeletePopUpController{
+class TodoListApplication{
 'methods
-    -cancel(ActionEvent event)
-    -delete(ActionEvent event)
+    +main(String[] args)
+    +start(Stage stage)
 }
-
 
 @enduml

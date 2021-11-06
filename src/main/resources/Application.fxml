@@ -54,56 +54,63 @@
 
 <VBox prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TodoListApplication.ApplicationController">
   <children>
-      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
+      <HBox prefHeight="35.0" prefWidth="604.0" style="-fx-background-color: white;">
          <children>
-          <MenuBar style="-fx-background-color: white; -fx-border-radius: 50px; -fx-border-color: lightgrey; -fx-border-width: 5px;">
-            <menus>
-              <Menu mnemonicParsing="false" text="File">
-                <items>
-                  <MenuItem mnemonicParsing="false" text="Open Lists" />
-                  <MenuItem mnemonicParsing="false" text="Download Lists" />
-                </items>
-              </Menu>
-                  <Menu mnemonicParsing="false" text="Show">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="All Tasks" />
-                        <MenuItem mnemonicParsing="false" text="Uncompleted Tasks" />
-                        <MenuItem mnemonicParsing="false" text="Completed Tasks" />
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Delete">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#deleteTask" text="Delete Selected Task" />
-                        <MenuItem mnemonicParsing="false" onAction="#clearAll" text="Clear List" />
-                     </items>
-                  </Menu>
-            </menus>
-          </MenuBar>
-            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="35.0" prefWidth="694.0" />
-            <Label onMouseClicked="#changeStatus" text="✅ " textAlignment="CENTER" textFill="#7e7e7e">
-               <font>
-                  <Font size="23.0" />
-               </font>
-            </Label>
+            <HBox prefHeight="26.0" prefWidth="257.0" style="-fx-background-color: lightgrey; -fx-border-color: white; -fx-border-width: 0;">
+               <children>
+                <MenuBar prefHeight="26.0" prefWidth="151.0" style="-fx-background-color: transparent;">
+                  <menus>
+                    <Menu mnemonicParsing="false" text="File">
+                      <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openList" text="Open List" />
+                        <MenuItem mnemonicParsing="false" onAction="#downloadList" text="Download List" />
+                      </items>
+                    </Menu>
+                        <Menu mnemonicParsing="false" text="Show">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#showAll" text="All Tasks" />
+                              <MenuItem mnemonicParsing="false" onAction="#showUncompleted" text="Uncompleted Tasks" />
+                              <MenuItem mnemonicParsing="false" onAction="#showCompleted" text="Completed Tasks" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Delete">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#deleteTask" text="Delete Selected Task" />
+                              <MenuItem mnemonicParsing="false" onAction="#clearAll" text="Clear List" />
+                           </items>
+                        </Menu>
+                  </menus>
+                </MenuBar>
+                  <Button mnemonicParsing="false" onAction="#changeStatus" prefHeight="26.0" prefWidth="103.0" style="-fx-background-color: transparent;" stylesheets="@buttonStyle.css" text="Check Task ✅ " textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="202.0" />
          </children>
       </HBox>
   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="551.0" prefWidth="815.0" style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;" stylesheets="@style.css">
          <children>
-            <TableView fx:id="tableView" editable="true" layoutX="108.0" layoutY="37.0" prefHeight="418.0" prefWidth="815.0" style="-fx-background-color: white; -fx-border-color: white; -fx-font-size: 20px; -fx-font-family: Corbel;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="30.0">
+            <TableView fx:id="tableView" editable="true" layoutX="108.0" layoutY="37.0" prefHeight="418.0" prefWidth="791.0" style="-fx-background-color: white; -fx-border-color: white; -fx-font-size: 20px; -fx-font-family: Corbel;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="30.0">
               <columns>
-                  <TableColumn fx:id="statusCol" prefWidth="28.79998779296875" />
-                <TableColumn id="tasksCol" fx:id="nameColumn" onEditCommit="#changeName" prefWidth="584.0000228881836" text="tasks">
+                  <TableColumn fx:id="statusColumn" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                <TableColumn id="tasksCol" fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="100.0" onEditCommit="#changeName" prefWidth="600.0" text="tasks">
                 </TableColumn>
-                <TableColumn id="dateCol" fx:id="dateColumn" minWidth="0.0" onEditCommit="#changeDate" prefWidth="139.20001220703125" text="due date" />
+                <TableColumn id="dateCol" fx:id="dateColumn" maxWidth="120.0" minWidth="120.0" onEditCommit="#changeDate" prefWidth="120.0" text="due date" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="812.0" layoutY="423.0" stroke="WHITE" strokeType="INSIDE" width="44.0" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="44.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="814.0" layoutY="24.0" stroke="WHITE" strokeType="INSIDE" width="44.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="24.0" />
+            <Pane layoutX="693.5999755859375" layoutY="411.0" prefHeight="45.0" prefWidth="900.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="48.0" layoutX="814.0" layoutY="24.0" stroke="WHITE" strokeType="INSIDE" width="30.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="24.0" />
          </children>
       </AnchorPane>
       <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
          <children>
-            <TextField fx:id="nameField" prefHeight="37.0" prefWidth="514.0" promptText="name" style="-fx-background-color: white; -fx-border-color: silver; -fx-border-radius: 10px;" text="testtt">
+            <TextField fx:id="nameField" prefHeight="37.0" prefWidth="514.0" promptText="name" style="-fx-background-color: white; -fx-border-color: silver; -fx-border-radius: 10px;">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
@@ -116,7 +123,7 @@
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="37.0" prefWidth="25.0" />
             <Pane prefHeight="37.0" prefWidth="99.0">
                <children>
-                  <Button fx:id="newButton" layoutX="3.0" mnemonicParsing="false" onAction="#newTask" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: lightgrey;" text="New Task">
+                  <Button fx:id="newButton" layoutX="3.0" mnemonicParsing="false" onAction="#newTask" prefHeight="37.0" prefWidth="91.0" stylesheets="@style.css" text="New Task">
                      <font>
                         <Font name="Corbel" size="17.0" />
                      </font>
@@ -130,16 +137,16 @@
       </HBox>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>
-        <Label fx:id="statusTxt" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text=":)" HBox.hgrow="ALWAYS">
+        <Label fx:id="statusMessageTxt" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text=":)" HBox.hgrow="ALWAYS">
           <font>
             <Font name="OCR A Extended" size="11.0" fx:id="x3" />
           </font>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
         <Label font="$x3" maxWidth="-1.0" text="List Progress" HBox.hgrow="NEVER" />
-            <ProgressBar fx:id="statBar" prefHeight="16.0" prefWidth="167.0" progress="0.0">
+            <ProgressBar fx:id="progressBar" prefHeight="16.0" prefWidth="167.0" progress="0.0">
                <effect>
-                  <ColorAdjust brightness="0.3" contrast="0.04" hue="-0.13" saturation="-0.22" />
+                  <ColorAdjust brightness="0.34" contrast="0.33" hue="-0.06" saturation="-0.37" />
                </effect>
             </ProgressBar>
       </children>

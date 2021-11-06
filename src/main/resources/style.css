@@ -15,7 +15,9 @@
 }
 
 .table-view .scroll-bar:horizontal {
-    visibility: false;
+-fx-background-color: transparent;
+display: none;
+visibility: hidden;
 }
 
 .table-view .column-header-background .label{
@@ -27,12 +29,27 @@
     -fx-font-family: Calibri;
 }
 
+.table-view .column-header-background .label:hover{
+    -fx-text-fill: black;
+   // -fx-font-weight: bold;
+}
+
+.button{
+-fx-background-color: lightgrey;
+}
+
+.button:hover{
+-fx-text-fill: white;
+-fx-background-color: darkgrey;
+}
+
 .tree-table-view .table-column{
     -fx-alignment:center-left;
 }//yes but why
 
 .tree-table-view .table-cell{
     -fx-font-size:15px;
+    -fx-wrap-text: true;
 } //no
 
 
@@ -46,11 +63,13 @@
 
 
 .table-row-cell:selected {
-    -fx-background-color: blue;
+    -fx-background-color: dodgerblue; //or royalblue
+    -fx-text-fill: white;
 }
 
 .table-row-cell:odd:selected {
-    -fx-background-color: blue;
+    -fx-background-color: dodgerblue;
+    -fx-text-fill: white;
 }
 
  .table-row-cell{
