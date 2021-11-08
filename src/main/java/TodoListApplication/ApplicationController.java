@@ -37,6 +37,7 @@ public class ApplicationController {
 
     //Create new task with information given and add to table
     //throw error if no name given
+    //throw error if name too long
     //throw error if date invalid
     @FXML
     private void newTask() {
@@ -65,7 +66,8 @@ public class ApplicationController {
                     nameField.setText("");
                     dateField.getEditor().clear();
                     dateField.setValue(null);
-                }else{
+
+                }else{ //ERROR - name too long
                     statusMessageTxt.setText("name must be less than 257 characters");
                 }
             }else{ //ERROR - name field empty
@@ -210,6 +212,7 @@ public class ApplicationController {
 
     //Changes the name of a task in the chart
     //throws error if name is blank
+    //throws error if name too long
     @FXML
     private void changeName(CellEditEvent<Task, String> cell) {
         Task taskSelected =  tableView.getSelectionModel().getSelectedItem();
@@ -219,13 +222,14 @@ public class ApplicationController {
             if(nameField.getText().length() <= 256) {
                 taskSelected.setName(cell.getNewValue());
                 statusMessageTxt.setText(":D");
-            }else{
+
+            }else{ //ERROR - name too long
                 list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
                 list.remove(taskSelected);
                 tableView.setItems(list);
                 statusMessageTxt.setText("name must be less than 257 characters");
             }
-        }else{ //ERROR
+        }else{ //ERROR - name empty
             list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
             list.remove(taskSelected);
             tableView.setItems(list);

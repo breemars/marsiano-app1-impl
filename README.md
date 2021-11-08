@@ -26,6 +26,7 @@ Importing a Task List
 Creating a New Task
 - Type a task name and due date into the bottom text fields, then click "New Task" to add it to the list
 - The Name field can NOT be blank, the date field CAN
+- Name must be less than 257 characters
 - The Date field must be in M/D/YYYY format, use the calender popup by clicking on the icon next to the date field to help
 
 Marking Task Complete/Not Complete
