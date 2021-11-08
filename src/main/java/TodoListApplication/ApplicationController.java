@@ -44,27 +44,30 @@ public class ApplicationController {
         try {
             //if name field is not black
             if(!nameField.getText().equals("") && !nameField.getText().equals(" ")) {
+                if(nameField.getText().length() <= 256) {
 
-                //Create new task with or without date
-                Task newTask;
-                if (dateField.getValue() == null)
-                    newTask = new Task(nameField.getText(), false);
-                else
-                    newTask = new Task(nameField.getText(), dateField.getValue().toString(), false);
+                    //Create new task with or without date
+                    Task newTask;
+                    if (dateField.getValue() == null)
+                        newTask = new Task(nameField.getText(), false);
+                    else
+                        newTask = new Task(nameField.getText(), dateField.getValue().toString(), false);
 
-                //Add task to table
-                list.add(newTask);
-                tableView.setItems(list);
+                    //Add task to table
+                    list.add(newTask);
+                    tableView.setItems(list);
 
-                //Update status
-                updateProgressBar();
-                statusMessageTxt.setText(":D");
+                    //Update status
+                    updateProgressBar();
+                    statusMessageTxt.setText(":D");
 
-                //Clear text fiends
-                nameField.setText("");
-                dateField.getEditor().clear();
-                dateField.setValue(null);
-
+                    //Clear text fiends
+                    nameField.setText("");
+                    dateField.getEditor().clear();
+                    dateField.setValue(null);
+                }else{
+                    statusMessageTxt.setText("name must be less than 257 characters");
+                }
             }else{ //ERROR - name field empty
                 statusMessageTxt.setText("name cannot be empty :(");
             }
@@ -213,9 +216,15 @@ public class ApplicationController {
 
         //Check to see if blank, change the name if not
         if(!cell.getNewValue().equals("") && !cell.getNewValue().equals(" ")) {
-            taskSelected.setName(cell.getNewValue());
-            statusMessageTxt.setText(":D");
-
+            if(nameField.getText().length() <= 256) {
+                taskSelected.setName(cell.getNewValue());
+                statusMessageTxt.setText(":D");
+            }else{
+                list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
+                list.remove(taskSelected);
+                tableView.setItems(list);
+                statusMessageTxt.setText("name must be less than 257 characters");
+            }
         }else{ //ERROR
             list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
             list.remove(taskSelected);
