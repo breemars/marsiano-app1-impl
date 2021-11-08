@@ -7,6 +7,9 @@ Welcome to my task list program! Here's how to use it~
 *Why are there Xs and Os?*
 - X stands for an uncompleted task, O stands for completed
 
+*How do I update the progress bar?*
+- The progress bar is updated automatically when you mark a task as completed or uncompleted
+
 Error Handling
 - If you run into any troubles, the Status Bar at the bottom left of the screen will display any error messages to help you navigate the program
 
