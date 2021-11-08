@@ -35,76 +35,95 @@ public class ApplicationController {
     @FXML private Label statusMessageTxt;
     @FXML private ProgressBar progressBar;
 
-    //add new task with information given
+    //Create new task with information given and add to table
     //throw error if no name given
     //throw error if date invalid
     @FXML
     private void newTask() {
 
         try {
+            //if name field is not black
             if(!nameField.getText().equals("") && !nameField.getText().equals(" ")) {
 
+                //Create new task with or without date
                 Task newTask;
                 if (dateField.getValue() == null)
                     newTask = new Task(nameField.getText(), false);
                 else
                     newTask = new Task(nameField.getText(), dateField.getValue().toString(), false);
 
+                //Add task to table
                 list.add(newTask);
                 tableView.setItems(list);
 
+                //Update status
                 updateProgressBar();
                 statusMessageTxt.setText(":D");
-            }else{
+
+                //Clear text fiends
+                nameField.setText("");
+                dateField.getEditor().clear();
+                dateField.setValue(null);
+
+            }else{ //ERROR - name field empty
                 statusMessageTxt.setText("name cannot be empty :(");
             }
-        }catch (Exception e){
+        }catch (Exception e){ //ERROR - date field invalid
             statusMessageTxt.setText("INVALID DATE - MUST BE M/D/YYYY OR BLANK");
         }
 
     }
 
-    //opens window for finding a file and adds that list data to lists
-    //updates status bar to an error message if file invalid
+    //Opens window for finding a file and imports list data into chart
+    //throw error if file invalid
     @FXML
     private void openList() {
 
+        //Open window
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TextFile", "*.txt"));
         File selectedFile = fileChooser.showOpenDialog(stage);
 
+        //Import File Data
         try(Scanner reader = new Scanner(selectedFile)){
-            list.clear();
-            totalCompTasks = Double.parseDouble(reader.nextLine());
+            ObservableList<Task> newList = FXCollections.observableArrayList();
 
+            totalCompTasks = Double.parseDouble(reader.nextLine());
             while (reader.hasNextLine()) {
                 String name = reader.nextLine();
                 String date = reader.nextLine();
                 String status = reader.nextLine();
-                list.add(new Task(name, date, status));
+                newList.add(new Task(name, date, status));
             }
-
+            //Update Chart and Status
+            list.clear();
+            list.addAll(newList);
             tableView.setItems(list);
             updateProgressBar();
             statusMessageTxt.setText("Opened " + selectedFile);
-        } catch (Exception e) {
+
+        } catch (Exception e) { //ERROR - file invalid
             statusMessageTxt.setText("INVALID FILE - Must be in proper format");
         }
 
 
     }
 
-    //opens download pop up and then downloads file
+    //opens download pop up and exports data as a txt file
+    //throws error if file invalid
     @FXML
     private void downloadList() {
+
+        //Opens window
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save");
         fileChooser.setInitialFileName("myList.txt");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TextFile", "*.txt"));
 
         File selectedFile = fileChooser.showSaveDialog(stage);
 
+        //Write data to txt file
         try (FileWriter writer = new FileWriter(selectedFile)) {
             writer.write(totalCompTasks + "\n");
             for (Task task : list) {
@@ -113,12 +132,13 @@ public class ApplicationController {
                 writer.write(task.getStatus() + "\n");
             }
             statusMessageTxt.setText("Downloaded " + selectedFile);
-        }catch (IOException e){
+
+        }catch (IOException e){ //ERROR - file invalid
             statusMessageTxt.setText("INVALID FILE");
         }
     }
 
-    //repopulates the chart with all data
+    //repopulates chart with all data
     @FXML
     private void showAll() {
         tableView.setItems(list);
@@ -134,7 +154,6 @@ public class ApplicationController {
                 completed.add(task);
         }
         tableView.setItems(completed);
-
     }
 
     //repopulates the chart with uncompleted data/tasks with status "false"
@@ -149,26 +168,33 @@ public class ApplicationController {
         tableView.setItems(uncompleted);
     }
 
+    //Deletes a task from the chart
+    //throws error if no task selected
     @FXML
     private void deleteTask(){
         try {
+            //Get task
             Task taskSelected = tableView.getSelectionModel().getSelectedItem();
 
+            //Update progress bar counter
             if (taskSelected.getStatusBool())
                 totalCompTasks--;
 
+            //Remove task
             list.remove(taskSelected);
             tableView.setItems(list);
 
+            //Update status
             updateProgressBar();
             statusMessageTxt.setText("B-) Deleted " + taskSelected.getName());
-        }catch (Exception e){
+
+        }catch (Exception e){ //ERROR
             statusMessageTxt.setText("no task selected");
         }
-
     }
 
-    //opens confirmation popup, then deletes all tasks
+    //Deletes all tasks from chart
+    //Resets progress bar
     @FXML
     private void clearAll() {
         ObservableList<Task> allTasks = tableView.getItems();
@@ -179,13 +205,18 @@ public class ApplicationController {
         statusMessageTxt.setText("all tasks deleted");
     }
 
+    //Changes the name of a task in the chart
+    //throws error if name is blank
     @FXML
     private void changeName(CellEditEvent<Task, String> cell) {
         Task taskSelected =  tableView.getSelectionModel().getSelectedItem();
+
+        //Check to see if blank, change the name if not
         if(!cell.getNewValue().equals("") && !cell.getNewValue().equals(" ")) {
             taskSelected.setName(cell.getNewValue());
             statusMessageTxt.setText(":D");
-        }else{
+
+        }else{ //ERROR
             list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
             list.remove(taskSelected);
             tableView.setItems(list);
@@ -193,6 +224,8 @@ public class ApplicationController {
         }
     }
 
+    //Changes the date of a task in the chart
+    //throws error if date is invalid
     @FXML
     private void changeDate(CellEditEvent<Task, String> cell) {
        Task taskSelected = tableView.getSelectionModel().getSelectedItem();
@@ -201,7 +234,7 @@ public class ApplicationController {
             taskSelected.setDate(cell.getNewValue());
             statusMessageTxt.setText(":D");
 
-        }catch(Exception e){
+        }catch(Exception e){ //ERROR
             list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
             list.remove(taskSelected);
             tableView.setItems(list);
@@ -209,12 +242,14 @@ public class ApplicationController {
         }
     }
 
-
+    //Updates the status of a task (completed or not completed)
+    //throws error if no task selected
     @FXML
     private void changeStatus(){
         try {
             Task taskSelected = tableView.getSelectionModel().getSelectedItem();
 
+            //Update progress bar
             if (taskSelected.getStatusBool()) {
                 taskSelected.setStatus(false);
                 totalCompTasks--;
@@ -224,24 +259,27 @@ public class ApplicationController {
             }
             updateProgressBar();
 
+            //Update chart
             list.add(new Task(taskSelected.getName(), taskSelected.getDate(), taskSelected.getStatusBool()));
             list.remove(taskSelected);
             tableView.setItems(list);
 
+            //Status messages
             statusMessageTxt.setText("woo");
-
             if(totalCompTasks == list.size())
                 statusMessageTxt.setText("ALL TASKS COMPLETE - CONGRATS KING B-)");
 
-        }catch (Exception e){
+        }catch (Exception e){ //ERROR
             statusMessageTxt.setText("no task selected");
         }
     }
 
+    //Update the progress bar when changes are made
     private void updateProgressBar(){
         progressBar.setProgress(totalCompTasks/tableView.getItems().size());
     }
 
+    //Initial construction of the table
     public void initialize() {
         //set up the columns in the table
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));

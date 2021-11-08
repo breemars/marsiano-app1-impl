@@ -52,7 +52,7 @@ class ApplicationController{
     -changeStatus()
 
     -updateProgressBar()
-    +initialize(URL url, ResourceBundle rb)
+    +initialize()
 }
 
 class TodoListApplication{

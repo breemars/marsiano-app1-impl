@@ -1,6 +1,6 @@
 .table-view{
     -fx-background-color: transparent;
- } //no
+ }
 
 .table-view .column-header {
      -fx-background-color: transparent;
@@ -8,16 +8,14 @@
 
 .table-view .column-header-background{
     -fx-background-color: transparent;
-} //yes but why
+}
 
 .table-view .scroll-bar {
     -fx-background-color: whitesmoke;
 }
 
 .table-view .scroll-bar:horizontal {
--fx-background-color: transparent;
-display: none;
-visibility: hidden;
+    -fx-background-color: transparent;
 }
 
 .table-view .column-header-background .label{
@@ -31,27 +29,11 @@ visibility: hidden;
 
 .table-view .column-header-background .label:hover{
     -fx-text-fill: black;
-   // -fx-font-weight: bold;
 }
 
-.button{
--fx-background-color: lightgrey;
+.table-view .table-cell{
+    -fx-font-size:18px;
 }
-
-.button:hover{
--fx-text-fill: white;
--fx-background-color: darkgrey;
-}
-
-.tree-table-view .table-column{
-    -fx-alignment:center-left;
-}//yes but why
-
-.tree-table-view .table-cell{
-    -fx-font-size:15px;
-    -fx-wrap-text: true;
-} //no
-
 
 .table-row-cell:hover {
     -fx-background-color: cyan;
@@ -61,23 +43,31 @@ visibility: hidden;
     -fx-background-color: cyan;
 }
 
-
 .table-row-cell:selected {
-    -fx-background-color: dodgerblue; //or royalblue
+    -fx-background-color: dodgerblue;
     -fx-text-fill: white;
+    -fx-background-radius: 15px;
 }
 
 .table-row-cell:odd:selected {
     -fx-background-color: dodgerblue;
     -fx-text-fill: white;
+    -fx-background-radius: 15px;
 }
 
  .table-row-cell{
     -fx-background-color: white;
-
 }
 
 .table-row-cell:odd{
     -fx-background-color: white;
+}
 
+.button{
+    -fx-background-color: lightgrey;
+}
+
+.button:hover{
+    -fx-text-fill: white;
+    -fx-background-color: rgb(0, 150, 201);
 }

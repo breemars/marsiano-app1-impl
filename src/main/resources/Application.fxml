@@ -56,7 +56,7 @@
   <children>
       <HBox prefHeight="35.0" prefWidth="604.0" style="-fx-background-color: white;">
          <children>
-            <HBox prefHeight="26.0" prefWidth="257.0" style="-fx-background-color: lightgrey; -fx-border-color: white; -fx-border-width: 0;">
+            <HBox prefHeight="27.0" prefWidth="242.0" style="-fx-background-color: lightgrey; -fx-border-color: white; -fx-background-radius: 30px;">
                <children>
                 <MenuBar prefHeight="26.0" prefWidth="151.0" style="-fx-background-color: transparent;">
                   <menus>
@@ -81,12 +81,15 @@
                         </Menu>
                   </menus>
                 </MenuBar>
-                  <Button mnemonicParsing="false" onAction="#changeStatus" prefHeight="26.0" prefWidth="103.0" style="-fx-background-color: transparent;" stylesheets="@buttonStyle.css" text="Check Task ✅ " textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#changeStatus" prefHeight="26.0" prefWidth="86.0" stylesheets="@buttonStyle.css" text="Check Task ">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
                </children>
+               <HBox.margin>
+                  <Insets left="5.0" top="5.0" />
+               </HBox.margin>
             </HBox>
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="202.0" />
          </children>
